@@ -45,7 +45,7 @@ local function format_output(opt, src, no)
    local name = path.basename(src)
    local e = path.extension(name)
    local basename = name:sub(0, name:len() - e:len())
-   
+
    if opt.o == "(auto)" then
       return path.join(path.dirname(src), string.format("%s_%s.png", basename, opt.m))
    else
@@ -155,17 +155,18 @@ local function convert_image(opt)
 
       x = alpha_util.make_border(x, alpha, reconstruct.offset_size(model))
       if opt.scale == 1 then
-	 new_x = image_f(model, x, opt.crop_size, opt.batch_size)
+	       new_x = image_f(model, x, opt.crop_size, opt.batch_size)
       else
-	 new_x = scale_f(model, opt.scale, x, opt.crop_size, opt.batch_size)
+	       new_x = scale_f(model, opt.scale, x, opt.crop_size, opt.batch_size)
       end
       new_x = alpha_util.composite(new_x, alpha) -- TODO: should it use model?
       if not opt.q then
-	 print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
+	       print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
       end
    else
       error("undefined method:" .. opt.method)
    end
+   print("New X", new_x)
    image_loader.save_png(opt.o, new_x, tablex.update({depth = opt.depth, inplace = true}, meta))
 end
 local function convert_frames(opt)
@@ -221,7 +222,7 @@ local function convert_frames(opt)
       table.insert(lines, line)
    end
    fp:close()
-   
+
    for i = 1, #lines do
       local output = format_output(opt, lines[i], i)
       if opt.resume == 0 or path.exists(output) == false then
@@ -258,7 +259,7 @@ local function convert_frames(opt)
 	    else
 	       error("undefined method:" .. opt.method)
 	    end
-	    image_loader.save_png(output, new_x, 
+	    image_loader.save_png(output, new_x,
 				  tablex.update({depth = opt.depth, inplace = true}, meta))
 	 end
 	 if not opt.q then
