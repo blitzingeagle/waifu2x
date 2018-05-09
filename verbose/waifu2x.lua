@@ -94,62 +94,63 @@ local function convert_image(opt)
       local model_path = path.join(opt.model_dir, ("noise%d_model.t7"):format(opt.noise_level))
       local model = w2nn.load_model(model_path, opt.force_cudnn)
       if not model then
-	 error("Load Error: " .. model_path)
+	       error("Load Error: " .. model_path)
       end
       local t = sys.clock()
       new_x = image_f(model, x, opt.crop_size, opt.batch_size)
       new_x = alpha_util.composite(new_x, alpha)
       if not opt.q then
-	 print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
+	       print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
       end
    elseif opt.m == "scale" then
       local model_path = path.join(opt.model_dir, ("scale%.1fx_model.t7"):format(opt.scale))
       local model = w2nn.load_model(model_path, opt.force_cudnn)
       if not model then
-	 error("Load Error: " .. model_path)
+	       error("Load Error: " .. model_path)
       end
       local t = sys.clock()
       x = alpha_util.make_border(x, alpha, reconstruct.offset_size(model))
+      print(x)
       new_x = scale_f(model, opt.scale, x, opt.crop_size, opt.batch_size, opt.batch_size)
       new_x = alpha_util.composite(new_x, alpha, model)
       if not opt.q then
-	 print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
+	       print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
       end
    elseif opt.m == "noise_scale" then
       local model_path = path.join(opt.model_dir, ("noise%d_scale%.1fx_model.t7"):format(opt.noise_level, opt.scale))
       if path.exists(model_path) then
-	 local scale_model_path = path.join(opt.model_dir, ("scale%.1fx_model.t7"):format(opt.scale))
-	 local t, scale_model = pcall(w2nn.load_model, scale_model_path, opt.force_cudnn)
-	 local model = w2nn.load_model(model_path, opt.force_cudnn)
-	 if not t then
-	    scale_model = model
-	 end
-	 local t = sys.clock()
-	 x = alpha_util.make_border(x, alpha, reconstruct.offset_size(scale_model))
-	 new_x = scale_f(model, opt.scale, x, opt.crop_size, opt.batch_size)
-	 new_x = alpha_util.composite(new_x, alpha, scale_model)
-	 if not opt.q then
-	    print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
-	 end
+        local scale_model_path = path.join(opt.model_dir, ("scale%.1fx_model.t7"):format(opt.scale))
+        local t, scale_model = pcall(w2nn.load_model, scale_model_path, opt.force_cudnn)
+        local model = w2nn.load_model(model_path, opt.force_cudnn)
+        if not t then
+          scale_model = model
+        end
+        local t = sys.clock()
+        x = alpha_util.make_border(x, alpha, reconstruct.offset_size(scale_model))
+        new_x = scale_f(model, opt.scale, x, opt.crop_size, opt.batch_size)
+        new_x = alpha_util.composite(new_x, alpha, scale_model)
+        if not opt.q then
+          print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
+        end
       else
-	 local noise_model_path = path.join(opt.model_dir, ("noise%d_model.t7"):format(opt.noise_level))
-	 local noise_model = w2nn.load_model(noise_model_path, opt.force_cudnn)
-	 local scale_model_path = path.join(opt.model_dir, ("scale%.1fx_model.t7"):format(opt.scale))
-	 local scale_model = w2nn.load_model(scale_model_path, opt.force_cudnn)
-	 local t = sys.clock()
-	 x = alpha_util.make_border(x, alpha, reconstruct.offset_size(scale_model))
-	 x = image_f(noise_model, x, opt.crop_size, opt.batch_size)
-	 new_x = scale_f(scale_model, opt.scale, x, opt.crop_size, opt.batch_size)
-	 new_x = alpha_util.composite(new_x, alpha, scale_model)
-	 if not opt.q then
-	    print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
-	 end
+        local noise_model_path = path.join(opt.model_dir, ("noise%d_model.t7"):format(opt.noise_level))
+        local noise_model = w2nn.load_model(noise_model_path, opt.force_cudnn)
+        local scale_model_path = path.join(opt.model_dir, ("scale%.1fx_model.t7"):format(opt.scale))
+        local scale_model = w2nn.load_model(scale_model_path, opt.force_cudnn)
+        local t = sys.clock()
+        x = alpha_util.make_border(x, alpha, reconstruct.offset_size(scale_model))
+        x = image_f(noise_model, x, opt.crop_size, opt.batch_size)
+        new_x = scale_f(scale_model, opt.scale, x, opt.crop_size, opt.batch_size)
+        new_x = alpha_util.composite(new_x, alpha, scale_model)
+        if not opt.q then
+          print(opt.o .. ": " .. (sys.clock() - t) .. " sec")
+        end
       end
-   elseif opt.m == "user" then
+    elseif opt.m == "user" then
       local model_path = opt.model_path
       local model = w2nn.load_model(model_path, opt.force_cudnn)
       if not model then
-	 error("Load Error: " .. model_path)
+	       error("Load Error: " .. model_path)
       end
       local t = sys.clock()
 
@@ -166,7 +167,6 @@ local function convert_image(opt)
    else
       error("undefined method:" .. opt.method)
    end
-   print("New X", new_x)
    image_loader.save_png(opt.o, new_x, tablex.update({depth = opt.depth, inplace = true}, meta))
 end
 local function convert_frames(opt)
