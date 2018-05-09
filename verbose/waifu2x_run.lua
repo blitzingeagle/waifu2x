@@ -256,30 +256,35 @@ local function convert_frames(opt)
    end
 end
 local function waifu2x()
-   local cmd = torch.CmdLine()
-   cmd:text()
-   cmd:text("waifu2x")
-   cmd:text("Options:")
-   cmd:option("-i", "images/miku_small.png", 'path to input image')
-   cmd:option("-l", "", 'path to image-list.txt')
-   cmd:option("-scale", 2, 'scale factor')
-   cmd:option("-o", "(auto)", 'path to output file')
-   cmd:option("-depth", 8, 'bit-depth of the output image (8|16)')
-   cmd:option("-model_dir", "./models/upconv_7/art", 'path to model directory')
-   cmd:option("-name", "user", 'model name for user method')
-   cmd:option("-m", "noise_scale", 'method (noise|scale|noise_scale|user)')
-   cmd:option("-method", "", 'same as -m')
-   cmd:option("-noise_level", 1, '(1|2|3)')
-   cmd:option("-crop_size", 128, 'patch size per process')
-   cmd:option("-batch_size", 1, 'batch_size')
-   cmd:option("-resume", 0, "skip existing files (0|1)")
-   cmd:option("-thread", -1, "number of CPU threads")
-   cmd:option("-tta", 0, 'use TTA mode. It is slow but slightly high quality (0|1)')
-   cmd:option("-tta_level", 8, 'TTA level (2|4|8). A higher value makes better quality output but slow')
-   cmd:option("-force_cudnn", 0, 'use cuDNN backend (0|1)')
-   cmd:option("-q", 0, 'quiet (0|1)')
+   -- local cmd = torch.CmdLine()
+   -- cmd:text()
+   -- cmd:text("waifu2x")
+   -- cmd:text("Options:")
+   -- cmd:option("-i", "images/miku_small.png", 'path to input image')
+   -- cmd:option("-l", "", 'path to image-list.txt')
+   -- cmd:option("-scale", 2, 'scale factor')
+   -- cmd:option("-o", "(auto)", 'path to output file')
+   -- cmd:option("-depth", 8, 'bit-depth of the output image (8|16)')
+   -- cmd:option("-model_dir", "./models/upconv_7/art", 'path to model directory')
+   -- cmd:option("-name", "user", 'model name for user method')
+   -- cmd:option("-m", "noise_scale", 'method (noise|scale|noise_scale|user)')
+   -- cmd:option("-method", "", 'same as -m')
+   -- cmd:option("-noise_level", 1, '(1|2|3)')
+   -- cmd:option("-crop_size", 128, 'patch size per process')
+   -- cmd:option("-batch_size", 1, 'batch_size')
+   -- cmd:option("-resume", 0, "skip existing files (0|1)")
+   -- cmd:option("-thread", -1, "number of CPU threads")
+   -- cmd:option("-tta", 0, 'use TTA mode. It is slow but slightly high quality (0|1)')
+   -- cmd:option("-tta_level", 8, 'TTA level (2|4|8). A higher value makes better quality output but slow')
+   -- cmd:option("-force_cudnn", 0, 'use cuDNN backend (0|1)')
+   -- cmd:option("-q", 0, 'quiet (0|1)')
+   --
+   -- local opt = cmd:parse(arg)
+   local opt
+   opt.m = "scale"
+   opt.i = "test_input.png"
+   opt.o = "test_output.png"
 
-   local opt = cmd:parse(arg)
    if opt.method:len() > 0 then
       opt.m = opt.method
    end
