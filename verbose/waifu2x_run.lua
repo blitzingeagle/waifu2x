@@ -280,7 +280,27 @@ local function waifu2x()
    -- cmd:option("-q", 0, 'quiet (0|1)')
    --
    -- local opt = cmd:parse(arg)
-   local opt
+   local opt = {
+     i = "images/miku_small.png",
+     l = "",
+     scale = 2,
+     o = "(auto)",
+     depth = 8,
+     model_dir = "./models/upconv_7/art",
+     name = "user",
+     m = "noise_scale",
+     method = "",
+     noise_level = 1,
+     crop_size = 128,
+     batch_size = 1,
+     resume = 0,
+     thread = -1,
+     tta = 0,
+     tta_level = 8,
+     force_cudnn = 0,
+     q = 0
+   }
+
    opt.m = "scale"
    opt.i = "test_input.png"
    opt.o = "test_output.png"
