@@ -90,6 +90,7 @@ local function convert_image(opt)
 	       error("Load Error: " .. model_path)
       end
       local t = sys.clock()
+      print(model)
       x = alpha_util.make_border(x, alpha, reconstruct.offset_size(model))
       new_x = scale_f(model, opt.scale, x, opt.crop_size, opt.batch_size, opt.batch_size)
       new_x = alpha_util.composite(new_x, alpha, model)
