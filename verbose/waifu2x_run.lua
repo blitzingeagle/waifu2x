@@ -1,3 +1,22 @@
+tic = os.time()
+local iproc = require 'iproc'
+print(string.format("Module 'iproc' prepared. (%d seconds)", os.time()-tic))
+
+tic = os.time()
+local reconstruct = require 'reconstruct'
+print(string.format("Module 'reconstruct' prepared. (%d seconds)", os.time()-tic))
+
+tic = os.time()
+local image_loader = require 'image_loader'
+print(string.format("Module 'image_loader' prepared. (%d seconds)", os.time()-tic))
+
+tic = os.time()
+local alpha_util = require 'alpha_util'
+print(string.format("Module 'alpha_util' prepared. (%d seconds)", os.time()-tic))
+
+print(string.format("Requirements prepared in %d seconds (%d seconds since program start).", os.time()-batch_time, os.time()-start_time))
+
+
 
 torch.setdefaulttensortype('torch.FloatTensor')
 
